@@ -1,23 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+
+class Nav extends Component {
+  state = {
+    list : []
+  }
+
+  componentDidMount() {
+    fetch('list.json')
+      .then(function(result) {
+        return result.json();
+      })
+      .then(function(json) {
+        console.log(json);
+        this.setState({list:json});
+      }.bind(this));
+  }
+
+  render() {
+    var listTag = [];
+    
+    for (var i = 0; i < this.state.list.length; i++) {
+      var li = this.state.list[i];
+      listTag.push(<li key={li.id}><a href={li.id}>{li.title}</a></li>)
+    }
+    return (
+      <nav>
+        {listTag}
+      </nav>
+    );
+  }
+}
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+      <h1>WEB</h1>
+
+      <Nav></Nav>
+
+      <article>
+        <h2>Welcome</h2>
+        Hello, React &amp; Ajax
+      </article>
+
     </div>
   );
 }
